@@ -1,15 +1,20 @@
 package com.te.employeeproject.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
@@ -19,6 +24,12 @@ import com.te.employeeproject.service.EmployeeService;
 
 @Controller
 public class EmployeeControllerClass {
+	
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		CustomDateEditor dateEditor= new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true);
+		binder.registerCustomEditor(Date.class, dateEditor);
+	}
 	
 	@Autowired
 	EmployeeService service;
@@ -70,13 +81,12 @@ public class EmployeeControllerClass {
 	@GetMapping("/logout")
 	public String logout(ModelMap  map,HttpSession session) {
 		session.invalidate();
-		map.addAttribute("msg", "Logout successfull");
-		
+		map.addAttribute("msg", "Logout successfull");	
 		return"loginForm";
 		
 	}
 	@GetMapping("/showDeletePage")
-	public String getDeletePage(ModelMap map,@SessionAttribute(name="emp") Employeedb employeedb) {
+	public String getDeletePage(ModelMap map,@SessionAttribute(name="emp" , required = false) Employeedb employeedb) {
 		if(employeedb!=null) {
 			return "deletePage";
 		}else {
@@ -86,7 +96,7 @@ public class EmployeeControllerClass {
 	}
 	
 	@GetMapping("/delete")
-	public String delete( int id,ModelMap map, @SessionAttribute(name="emp")Employeedb employeedb) {
+	public String delete( int id,ModelMap map, @SessionAttribute(name="emp", required = false)Employeedb employeedb) {
 		if(employeedb!=null) {
 			boolean isdeleted=service.deleteEmpData(id);
 			if(isdeleted) {
@@ -104,7 +114,7 @@ public class EmployeeControllerClass {
 	}
 	
 	@GetMapping("/getAllData")
-	public String getAlldata(ModelMap map,@SessionAttribute(name="emp")Employeedb employeedb) {
+	public String getAlldata(ModelMap map,@SessionAttribute(name="emp" ,required = false)Employeedb employeedb) {
 		if(employeedb!=null) {
 			List< Employeedb> employeedbs=service.getAllData();
 			if(employeedbs!=null) {
@@ -117,11 +127,57 @@ public class EmployeeControllerClass {
 			map.addAttribute("msg", "Please Login first");
 			return "loginForm";			
 		}
-		
+	}
+	
+	@GetMapping("/add")
+	public String getaddEmpForm() {
+		return"addEmpForm";
+	}
+	
+	@PostMapping("/addemp")
+	public String addEmployee(ModelMap map,@SessionAttribute(name="emp",required = false)Employeedb employeedb,Employeedb bean) {
+		if(employeedb!=null) {
+			
+			if(service.addEmp(bean)) {
+				map.addAttribute("msg", "Added successfully");
+			}else {
+				map.addAttribute("msg", "something went wrong");
+			}
+			return "addEmpForm";
+		}else {
+			map.addAttribute("errmsg", "Login First");
+		}
+		return "LoginForm";	
+	}
+	
+	@GetMapping("/update")
+	public String getUpdateForm(ModelMap map,@SessionAttribute(name="emp",required = false)Employeedb bean) {
+		if(bean!=null) {
+			map.addAttribute("eid", bean.getId());
+			return"updatePage";
+		}else {
+			map.addAttribute("errmsg","Login First");
+			return "loginForm";
+		} 
 		
 	}
 	
-	
-	
+	@PostMapping("/update")
+	public String updateEmp(@SessionAttribute(name="emp", required = false)Employeedb employeedb,Employeedb bean,ModelMap map) {
 		
+		if(employeedb!=null) {
+			if(service.updateEmp(bean)) {
+				map.addAttribute("eid", employeedb.getId());
+				map.addAttribute("msg", "Updated Successfully");
+			}
+			else {
+				map.addAttribute("msg", "Something went Wrong");
+			}
+			return "updatePage";
+		}else {
+			map.addAttribute("errmsg", "Login First");
+		}
+		return "LoginForm";
+		
+	}
 }

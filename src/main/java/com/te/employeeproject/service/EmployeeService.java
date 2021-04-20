@@ -9,5 +9,7 @@ public interface EmployeeService {
 	public Employeedb getEmployee(int id) ;
 	public boolean deleteEmpData( int id);
 	public List<Employeedb> getAllData();
+	public boolean addEmp(Employeedb employeedb);
+	public boolean updateEmp(Employeedb employeedb);
 
 }

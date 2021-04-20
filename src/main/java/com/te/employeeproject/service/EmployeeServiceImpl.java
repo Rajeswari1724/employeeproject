@@ -35,4 +35,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return dao.getAllData();
 	}
 
+	@Override
+	public boolean addEmp(Employeedb employeedb) {
+		// TODO Auto-generated method stub
+		return dao.addEmp(employeedb);
+	}
+
+	@Override
+	public boolean updateEmp(Employeedb employeedb) {
+		// TODO Auto-generated method stub
+		return dao.updateEmp(employeedb);
+	}
+
 }

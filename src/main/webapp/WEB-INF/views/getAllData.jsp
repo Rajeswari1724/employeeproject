@@ -1,6 +1,5 @@
-<%@page import="java.io.PrintWriter"%>
+
 <%@page import="org.hibernate.internal.build.AllowSysOut"%>
-<%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
 <%@page import="com.te.employeeproject.bean.Employeedb"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"

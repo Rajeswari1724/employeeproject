@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%
-String msg = (String) request.getAttribute("errmsg");
+String lmsg = (String) request.getAttribute("errmsg");
+String msg=(String)request.getAttribute("msg");
 %>
 
 <!DOCTYPE html>
@@ -11,6 +12,14 @@ String msg = (String) request.getAttribute("errmsg");
 <title>Insert title here</title>
 </head>
 <body>
+	<%
+	if (lmsg != null && !lmsg.isEmpty()) {
+	%>
+	<h1 style="color: red"><%=lmsg%></h1>
+	<%
+	}
+	%>
+	
 	<%
 	if (msg != null && !msg.isEmpty()) {
 	%>

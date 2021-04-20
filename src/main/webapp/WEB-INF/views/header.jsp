@@ -11,8 +11,8 @@
 		<tr style="background-color: lightgrey; color: blue; height: 30px">
 			<th style="font-size: 20px"><a href="./searchForm">Search
 					EMployee</a></th>
-			<th style="font-size: 20px"><a href="">Add Employee</a></th>
-			<th style="font-size: 20px"><a href="">Update EMployee</a></th>
+			<th style="font-size: 20px"><a href="./add">Add Employee</a></th>
+			<th style="font-size: 20px"><a href="./update">Update EMployee</a></th>
 			<th style="font-size: 20px"><a href="./showDeletePage">Delete
 					EMployee</a></th>
 			<th style="font-size: 20px"><a href="./getAllData">All
